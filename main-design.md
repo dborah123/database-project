@@ -15,3 +15,6 @@ This will handle taking the query strings, parsing them, and handing them to the
 
 ### Queue
 This will hold the data for the parsed queries. These queries will wait in line for the database thread to pick the next one up.
+
+### Virtual Machine
+This will take in SQL queries, traverse the B Tree, gather the data, adn send it back to the designated endpoint

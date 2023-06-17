@@ -1,8 +1,5 @@
 #include "repl.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
+
 
 #define READ_BUFFER_SIZE 200
 
@@ -27,7 +24,9 @@ main(int argc, char *argv[]) {
 
         if (exit_loop) break;
 
-        // Process input functionality here
+        // Send command to server
+
+        // Print info
     }
 
     free(input_buffer.input);

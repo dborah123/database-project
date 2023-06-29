@@ -12,4 +12,4 @@
 
 int is_port_invalid(char *port);
 int setup_port(char *port);
-int setup_poll_struct(struct pollfd *poll_fds, char *port)
+int setup_poll_struct(struct pollfd *poll_fds, char *port);

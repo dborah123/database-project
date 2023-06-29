@@ -9,9 +9,9 @@ main(int argc, char *argv[]) {
         perror("port is invalid");
     }
 
-    setup_port(argv[1]);
+    int listen_fd = setup_port(port);
 
-    listen_for_requests(argv[1]);
+    listen_for_requests(port, listen_fd);
     
 
 }
@@ -58,12 +58,12 @@ setup_port(char *port) {
 }
 
 void
-listen_for_requests(char *port) {
+listen_for_requests(char *port, int listen_fd) {
     socklen_t addrlen;
     struct sockaddr_in remote_sa;
 
     /* start listening */
-    if (listen(port, BACKLOG) < 0) {
+    if (listen(listen_fd, BACKLOG) < 0) {
         perror("listen");
         exit(1);
     }
@@ -89,6 +89,13 @@ listen_for_requests(char *port) {
 
 int
 setup_poll_struct(struct pollfd *poll_fds, char *port) {
+    /**
+     * DESCRIPTION: Sets up pollfd struct for polling. Allocates memory for the struct
+     * PARAMS:
+     *  poll_fds: pollfd struct being initialized
+     *  port: String of digits that represents port to bind to
+     * RETURNS: 1 if error, 0 otherwise
+    */
 
     if ((poll_fds = malloc(MAX_FDS * sizeof(struct pollfd))) == NULL) {
         return 1;

@@ -75,37 +75,39 @@ listen_for_requests(char *port, int listen_fd) {
     /* Set up poll structure */
 
     nfds_t nfds = 0;
-    struct pollfd *poll_fds;
+    struct pollfd poll_fds[MAX_FDS];
 
-    if (setup_poll_struct(poll_fds, port)) {
-        perror("malloc");
-        free(poll_fds);
-        exit(1);
-    }
+    setup_poll_struct(&poll_fds, listen_fd);
 
     int num_fds = 1;
+    nfds = num_fds;
+
+    // Loop and poll
+    while (1) {
+        if (poll(poll_fds, nfds, INFINITE_TIMEOUT) == -1) {
+            perror("poll");
+            exit();
+        }
+
+        handle_action(poll_fds, nfds);
+    }
+
     free(poll_fds);
 }
 
-int
-setup_poll_struct(struct pollfd *poll_fds, char *port) {
+void
+setup_poll_struct(struct pollfd poll_fds[], int listed_fd) {
     /**
      * DESCRIPTION: Sets up pollfd struct for polling. Allocates memory for the struct
      * PARAMS:
      *  poll_fds: pollfd struct being initialized
-     *  port: String of digits that represents port to bind to
+     *  listen_fd: File descriptor to listen on
      * RETURNS: 1 if error, 0 otherwise
     */
 
-    if ((poll_fds = malloc(MAX_FDS * sizeof(struct pollfd))) == NULL) {
-        return 1;
-    }
-
-    poll_fds->fd = port;
-    poll_fds->events = POLLIN;
-    poll_fds->revents = 0;
-
-    return 0;
+    poll_fds[0].fd = listed_fd;
+    poll_fds[0].events = POLLIN;
+    poll_fds[0].revents = 0;
 }
 
 int

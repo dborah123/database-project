@@ -7,6 +7,7 @@ main(int argc, char *argv[]) {
 
     if (is_port_invalid(port)) {
         perror("port is invalid");
+        exit(1);
     }
 
     int listen_fd = setup_port(port);

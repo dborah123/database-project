@@ -13,5 +13,5 @@
 
 int is_port_invalid(char *port);
 int setup_port(char *port);
-int setup_poll_struct(struct pollfd *poll_fds, int listen_fd);
-int handle_action(struct pollfd *current_file, int listen_fd)
+void setup_poll_struct(struct pollfd poll_fds[], int listen_fd);
+int handle_action(struct pollfd *current_file, int listen_fd);

@@ -47,5 +47,46 @@ read_input(InputBuffer *input_buffer) {
         return 1;
     }
 
+    if (strncmp(input, ".help", 5) == 0) {
+        print_helptext();
+    }
+
     return 0;
+}
+
+void
+print_helptext() {
+    /**
+     * DESCRIPTION: Prints the repl's helptext
+     * Helptext defined in ../static/repl-helptext
+    */
+
+    // Open the file
+    int fd = open(HELPTEXT_PATH, O_RDONLY);
+    if (fd == -1) {
+        perror("open");
+        return;
+    }
+
+    // Get file size
+    struct stat stat_buffer;
+    if (fstat(fd, &stat_buffer) == -1) {
+        perror("fstat");
+    }
+
+    // Malloc area for the helptext buffer
+    void *helptext_buffer = malloc(stat_buffer.st_size);
+    if (helptext_buffer == NULL) {
+        perror("malloc");
+    }
+
+    // Read the file into the buffer
+    if (read(fd, helptext_buffer, stat_buffer.st_size) == -1) {
+        perror("read");
+    }
+
+    printf(helptext_buffer);
+
+    free(helptext_buffer);
+
 }

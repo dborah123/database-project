@@ -7,9 +7,11 @@ Parse_Command() {
 
     process_input_buffer(&input_buffer);
 
-    if (prepare_statement(&input_buffer, &statement)) {
+    if (prepare_statement(&input_buffer, &statement) == PREPARE_FAILURE) {
         return;
     }
+
+    execute_statement(&input_buffer, &statement);
 }
 
 void
@@ -23,20 +25,33 @@ process_input_buffer(InputBuffer *input_buffer) {
     }
 }
 
-int
+PrepareResult
 prepare_statement(InputBuffer *input_buffer, Statement *statement) {
     
     if (strncmp(input_buffer->input, "INSERT", 6)) {
         statement->type = STATEMENT_INSERT;
-        return 0;
+        return PREPARE_SUCCESS;
     }
 
     if (strncmp(input_buffer->input, "SELECT", 6)) {
         statement->type = STATEMENT_SELECT;
-        return 0;
+        return PREPARE_SUCCESS;
     }
 
     statement->type = STATEMENT_INVALID;
 
-    return 1;
+    return PREPARE_FAILURE;
+}
+
+void
+execute_statement(InputBuffer *input_buffer,Statement *statement) {
+    switch (statement->type)
+    {
+    case STATEMENT_INSERT:
+        /* code */
+        break;
+    
+    default:
+        break;
+    }
 }

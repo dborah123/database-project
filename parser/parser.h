@@ -9,11 +9,17 @@ typedef enum {
     STATEMENT_INVALID
 } StatementType;
 
+typedef enum {
+    PREPARE_SUCCESS,
+    PREPARE_FAILURE
+} PrepareResult;
+
 typedef struct {
     StatementType type;
 } Statement;
 
 
 void Parse_Command();
-int prepare_statement(InputBuffer *input_buffer, Statement *statement);
+PrepareResult prepare_statement(InputBuffer *input_buffer, Statement *statement);
 void process_input_buffer(InputBuffer *input_buffer);
+void execute_statement(InputBuffer *input_buffer, Statement *statement);

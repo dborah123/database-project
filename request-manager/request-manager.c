@@ -42,7 +42,7 @@ setup_port(char *port) {
     hints.ai_flags = AI_PASSIVE;
 
     if ((rc = getaddrinfo(NULL, port, &hints, &res)) != 0) {
-        perror("getaddrinfo failed: %s\n", gai_strerror(rc));
+        perror("getaddrinfo failed");
         freeaddrinfo(res);
         exit(1);
     }
@@ -78,7 +78,7 @@ listen_for_requests(char *port, int listen_fd) {
     nfds_t nfds = 0;
     struct pollfd poll_fds[MAX_FDS];
 
-    setup_poll_struct(&poll_fds, listen_fd);
+    setup_poll_struct(poll_fds, listen_fd);
 
     int num_fds = 1;
     nfds = num_fds;
@@ -87,13 +87,12 @@ listen_for_requests(char *port, int listen_fd) {
     while (1) {
         if (poll(poll_fds, nfds, INFINITE_TIMEOUT) == -1) {
             perror("poll");
-            exit();
+            exit(1);
         }
 
         handle_action(poll_fds, nfds);
     }
 
-    free(poll_fds);
 }
 
 void
@@ -109,6 +108,12 @@ setup_poll_struct(struct pollfd poll_fds[], int listed_fd) {
     poll_fds[0].fd = listed_fd;
     poll_fds[0].events = POLLIN;
     poll_fds[0].revents = 0;
+}
+
+int
+handle_action(struct pollfd *current_file, int listen_fd) {
+    printf("\nPlaceholder");
+    return 1;
 }
 
 int

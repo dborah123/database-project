@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
@@ -15,3 +17,5 @@ int is_port_invalid(char *port);
 int setup_port(char *port);
 void setup_poll_struct(struct pollfd poll_fds[], int listen_fd);
 int handle_action(struct pollfd *current_file, int listen_fd);
+void listen_for_requests(char *port, int listen_fd);
+int isnumber(char *s);
